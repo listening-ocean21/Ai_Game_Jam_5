@@ -67,6 +67,17 @@ public class Player : MonoBehaviour
     }
 }
 
+[Serializable]
+public class DayCost
+{
+    public int Health;          // 生命值
+    public int San;             // 理智
+    public int Strength;    // 适应力
+}
 
-
+[Serializable]
+public class DayCosts
+{
+    public List<DayCost> Costs;
+}
 

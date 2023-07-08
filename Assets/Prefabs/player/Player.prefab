@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxLevel: 5
+  MaxDay: 25
   m_Body: {fileID: 9104162520075344520}
 --- !u!61 &9104162518636329837
 BoxCollider2D:
@@ -87,9 +88,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63e8a25593536104696bc4490fee9f51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelChanger: {fileID: 0}
   Player: {fileID: 0}
   topPanel: {fileID: 0}
+  subPanel: {fileID: 0}
+  DayCosts:
+  - Costs:
+    - Health: 2
+      San: 3
+      Strength: 4
+  - Costs:
+    - Health: 3
+      San: 0
+      Strength: 4
+    - Health: 0
+      San: 0
+      Strength: 0
+  - Costs: []
+  - Costs: []
+  - Costs: []
+  OnPlayerEat:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerDead:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerWin:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &9104162520075344523
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +187,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -982662829
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e4dc508867583224bbe1ed1030eac3cb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -172,7 +197,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &9104162520075344566
