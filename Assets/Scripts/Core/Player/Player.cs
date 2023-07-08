@@ -9,7 +9,7 @@ using UnityEngine.Events;
 public class Player : MonoBehaviour
 {
     public int MaxLevel = 5;
-
+    public int MaxDay = 25;
 
     public Transform m_Body;
     public PlayerAttributes Attributes;

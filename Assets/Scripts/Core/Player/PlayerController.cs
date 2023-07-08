@@ -16,8 +16,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour {
 
-    [SerializeField] private LevelChanger levelChanger;
-
     public static PlayerController Instance;
 
     
@@ -32,7 +30,7 @@ public class PlayerController : MonoBehaviour {
 
 
     public UnityAction OnLevelUp;
-    public UnityAction OnPlayerEat;
+    public UnityEvent OnPlayerEat;
 
 
 
@@ -56,10 +54,10 @@ public class PlayerController : MonoBehaviour {
         }
 
         // Dev
-        if (DevKey.Down(KeyCode.L))
-        {
-            LevelUp();
-        }
+        //if (DevKey.Down(KeyCode.L))
+        //{
+        //    LevelUp();
+        //}
         if (DevKey.Down(KeyCode.H))
         {
             AddPlayerHealth(1);
@@ -74,7 +72,7 @@ public class PlayerController : MonoBehaviour {
         }
         if (DevKey.Down(KeyCode.D))
         {
-            AddDay(1);
+            AddDay();
         }
         if (DevKey.Down(KeyCode.E))
         {
@@ -133,10 +131,15 @@ public class PlayerController : MonoBehaviour {
         OnLevelUp?.Invoke();
     }
 
-    public void AddDay(int val)
+    public void AddDay()
     {
-        Player.Attributes.Day += val;
+        if (Player.Attributes.Day >= Player.MaxDay) return;
+        Player.Attributes.Day++;
         topPanel.dayText.text = $"{Player.Attributes.Day}";
+        if (Player.Attributes.Day % 5 == 1)
+        {
+            LevelUp();
+        }
     }
 
 
