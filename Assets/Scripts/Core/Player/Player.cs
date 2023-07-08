@@ -6,45 +6,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Player : GameActor
+public class Player : MonoBehaviour
 {
+    public int MaxLevel = 5;
 
-    public Rigidbody m_Rigidbody;
+
     public Transform m_Body;
-    public PlayerAttributes m_Attributes;
+    public PlayerAttributes Attributes;
 
-    public UnityAction OnLevelUp;
 
+    private void Awake()
+    {
+        Attributes = new PlayerAttributes();
+    }
 
     // Start is called before the first frame update
-    protected override void OnCreate()
+    public void Start()
     {
-        base.OnCreate();
-        m_Rigidbody = GetComponentInChildren<Rigidbody>();
-        m_Attributes = new PlayerAttributes();
+
     }
 
 
-    public override void Tick()
+    public void Update()
     {
-        base.Tick();
-        if (DevKey.Down(KeyCode.L))
-        {
-            LevelUp();
-        }
+
     }
 
-    protected override void Hit(DamageContext context)
-    {
-        base.Hit(context);
-        //IndicatorManager.instance.Spawn(transform.position, context.value.ToString());
-    }
+    //protected override void Hit(DamageContext context)
+    //{
+    //    base.Hit(context);
+    //    //IndicatorManager.instance.Spawn(transform.position, context.value.ToString());
+    //}
 
-    public void LevelUp()
-    {
-        m_Attributes.LevelUp(1);
-        OnLevelUp?.Invoke();
-    }
 
     public class PlayerAttributes
     {
@@ -54,13 +47,11 @@ public class Player : GameActor
         public int Adaptability;    // 适应力
 
 
-
-
         public PlayerAttributes()
         {
-            Level = 0;
+            Level = 1;
             Health = 5;
-            San = 3;
+            San = 4;
             Adaptability = 12;
         }
 
@@ -71,8 +62,6 @@ public class Player : GameActor
             San += 1 * val;
             Adaptability -= 2 * val;
         }
-
-
     }
 }
 
