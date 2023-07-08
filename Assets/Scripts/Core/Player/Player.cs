@@ -1,9 +1,10 @@
+using AnttiStarterKit.Utils;
 using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 public class Player : GameActor
 {
@@ -11,6 +12,8 @@ public class Player : GameActor
     public Rigidbody m_Rigidbody;
     public Transform m_Body;
     public PlayerAttributes m_Attributes;
+
+    public UnityAction OnLevelUp;
 
 
     // Start is called before the first frame update
@@ -25,7 +28,10 @@ public class Player : GameActor
     public override void Tick()
     {
         base.Tick();
-
+        if (DevKey.Down(KeyCode.L))
+        {
+            LevelUp();
+        }
     }
 
     protected override void Hit(DamageContext context)
@@ -34,16 +40,39 @@ public class Player : GameActor
         //IndicatorManager.instance.Spawn(transform.position, context.value.ToString());
     }
 
+    public void LevelUp()
+    {
+        m_Attributes.LevelUp(1);
+        OnLevelUp?.Invoke();
+    }
+
     public class PlayerAttributes
     {
-        public Vector3 Velocity;
-        public float Speed;
+        public int Level;           // 等级
+        public int Health;          // 生命值
+        public int San;             // 理智
+        public int Adaptability;    // 适应力
+
+
+
 
         public PlayerAttributes()
         {
-            Velocity = Vector3.zero;
-            Speed = 1f;
+            Level = 0;
+            Health = 5;
+            San = 3;
+            Adaptability = 12;
         }
+
+        public void LevelUp(int val)
+        {
+            Level += val;
+            Health += 2 * val;
+            San += 1 * val;
+            Adaptability -= 2 * val;
+        }
+
+
     }
 }
 
