@@ -44,15 +44,17 @@ public class Player : MonoBehaviour
         public int Level;           // 等级
         public int Health;          // 生命值
         public int San;             // 理智
-        public int Adaptability;    // 适应力
+        public int Strength;    // 适应力
+        public int Day;             // 天数
 
 
         public PlayerAttributes()
         {
             Level = 1;
+            Day = 1;
             Health = 5;
             San = 4;
-            Adaptability = 12;
+            Strength = 12;
         }
 
         public void LevelUp(int val)
@@ -60,7 +62,7 @@ public class Player : MonoBehaviour
             Level += val;
             Health += 2 * val;
             San += 1 * val;
-            Adaptability -= 2 * val;
+            Strength -= 2 * val;
         }
     }
 }

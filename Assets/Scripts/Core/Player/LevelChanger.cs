@@ -28,7 +28,7 @@ public class LevelChanger : MonoBehaviour
     public void ShowLevel()
     {
         //prevAnimator.Play("LevelAnim" + Mathf.Max(PlayerController.Instance.Player.Attributes.Level - 1, 1));
-        Animator2.Play("LevelAnim" + PlayerController.Instance.Player.Attributes.Level);
+        Animator2.Play($"LevelAnim{PlayerController.Instance.Player.Attributes.Level}");
         spriteRenderer1.DOColor(new Color(1, 1, 1, 0), 0.5f);
         spriteRenderer2.DOColor(new Color(1, 1, 1, 1), 0.5f);
         SwapAnimator();

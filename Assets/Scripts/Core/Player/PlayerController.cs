@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
 
 
 #if ENABLE_INPUT_SYSTEM
@@ -24,8 +26,13 @@ public class PlayerController : MonoBehaviour {
     private bool active;
     private BoxCollider2D boxCollider;
 
+    #region UI
+    [SerializeField] private TopPanel topPanel;
+    #endregion
+
 
     public UnityAction OnLevelUp;
+    public UnityAction OnPlayerEat;
 
 
 
@@ -53,6 +60,27 @@ public class PlayerController : MonoBehaviour {
         {
             LevelUp();
         }
+        if (DevKey.Down(KeyCode.H))
+        {
+            AddPlayerHealth(1);
+        }
+        if (DevKey.Down(KeyCode.S))
+        {
+            AddPlayerSan(1);
+        }
+        if (DevKey.Down(KeyCode.T))
+        {
+            AddPlayerStrength(1);
+        }
+        if (DevKey.Down(KeyCode.D))
+        {
+            AddDay(1);
+        }
+        if (DevKey.Down(KeyCode.E))
+        {
+            PlayerEat();
+        }
+
     }
 
     void FixedUpdate()
@@ -66,6 +94,12 @@ public class PlayerController : MonoBehaviour {
     }
 
 
+    // TODO: 食物类型
+    private void PlayerEat()
+    {
+
+        OnPlayerEat?.Invoke();
+    }
 
 
     private void Rotate()
@@ -76,24 +110,35 @@ public class PlayerController : MonoBehaviour {
     public void AddPlayerHealth(int val)
     {
         Player.Attributes.Health += val;
+        topPanel.healthScroller.Add(val);
     }
 
     public void AddPlayerSan(int val)
     {
         Player.Attributes.San += val;
+        topPanel.sanScroller.Add(val);
     }
 
-    public void AddPlayerAdaptability(int val)
+    public void AddPlayerStrength(int val)
     {
-        Player.Attributes.Adaptability += val;
+        Player.Attributes.Strength += val;
+        topPanel.strengthScroller.Add(val);
     }
 
     public void LevelUp()
     {
         if (Player.Attributes.Level >= Player.MaxLevel) return;
         Player.Attributes.LevelUp(1);
+        topPanel.levelText.text = $"Lv {Player.Attributes.Level}";
         OnLevelUp?.Invoke();
     }
+
+    public void AddDay(int val)
+    {
+        Player.Attributes.Day += val;
+        topPanel.dayText.text = $"{Player.Attributes.Day}";
+    }
+
 
 
 }
