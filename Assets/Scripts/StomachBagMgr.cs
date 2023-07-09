@@ -38,8 +38,11 @@ public class StomachBagMgr : MonoBehaviour
     public int bagRow = 6;
     public int bagColumn = 7;
     public int cellSize = 100;
+    public int foodSize = 4;
     
-    public Vector3 bagLeftBottomPos = new Vector3();
+    //public Vector3 bagLeftBottomPos = new Vector3();
+
+    public GameObject stomachBagGrid;
     
     public List<List<StomachGridInfo>> stomachGrids = new List<List<StomachGridInfo>>();
 
@@ -65,27 +68,53 @@ public class StomachBagMgr : MonoBehaviour
         }
     }
 
+    public void SetStomachBagSize(int row, int column)
+    {
+        // for (int i = 0; i < row; i++)
+        // {
+        //     for (int j = 0; j < column; j++)
+        //     {
+        //         stomachGrids[i][j].isActive = true;
+        //     }
+        // }
+        
+        for (int i = row; i >= 0; i--)
+        {
+            for (int j = 0; j < column; j++)
+            {
+                stomachGrids[i][j].isActive = true;
+            }
+        }
+    }
+
+
     //判断是否能放进此处的格子，食物拖拽调用，传入食物左下角的trans，以及食物的形状
-    public bool CheckPutFood(Vector3 position, List<List<bool>> foodShape, FoodType foodType)
+    public bool CheckPutFood(Vector3 position, uint[,] foodShape, FoodType foodType)
     {
         Vector2 originGridXY = TransToGridXY(position);
         if (originGridXY.x < 0 || originGridXY.x >= bagColumn || originGridXY.y < 0 || originGridXY.y >= bagRow)
         {
             return false;
         } 
+        
 
-        for (int i = 0; i < foodShape.Count; i++)
+        for (int i = 0; i < foodSize; i++)
         {
-            for (int j = 0; j < foodShape[i].Count; j++)
+            for (int j = 0; j < foodSize; j++)
             {
-                if (IsGridOccupied(new Vector2(originGridXY.x + j, originGridXY.y + i)) && foodShape[i][j]) return false;
+                //判断越界
+                if (originGridXY.x + j < 0 || originGridXY.x + j >= bagColumn || originGridXY.y + i < 0 || originGridXY.y + i >= bagRow)
+                {
+                    return false;
+                }
+                if (IsGridOccupied(new Vector2(originGridXY.x + j, originGridXY.y + i)) && foodShape[i, j] == 1) return false;
             }
         }
         
         return true;
     }
 
-    public void PutFood(Vector3 position, List<List<bool>> foodShape, FoodType foodType)
+    public void PutFood(Vector3 position, uint[,] foodShape, FoodType foodType)
     {
         if (CheckPutFood(position, foodShape, foodType))
         {
@@ -94,11 +123,11 @@ public class StomachBagMgr : MonoBehaviour
             
             
 
-            for (int i = 0; i < foodShape.Count; i++)
+            for (int i = 0; i < foodSize; i++)
             {
-                for (int j = 0; j < foodShape[i].Count; j++)
+                for (int j = 0; j < foodSize; j++)
                 {
-                    if (foodShape[i][j])
+                    if (foodShape[i, j] == 1)
                     {
                         stomachGrids[(int) originGridXY.x + j][(int) originGridXY.y + i].foodType = foodType;
                         
@@ -107,11 +136,11 @@ public class StomachBagMgr : MonoBehaviour
                 }
             }
             
-            for (int i = 0; i < foodShape.Count; i++)
+            for (int i = 0; i < foodSize; i++)
             {
-                for (int j = 0; j < foodShape[i].Count; j++)
+                for (int j = 0; j < foodSize; j++)
                 {
-                    if (foodShape[i][j])
+                    if (foodShape[i, j] == 1)
                     {
                         stomachGrids[(int)originGridXY.x + j][(int)originGridXY.y + i].relatedGridXY = relatedGridXY;
                     }
@@ -136,8 +165,9 @@ public class StomachBagMgr : MonoBehaviour
                 foreach (var relatedGridXY in stomachGrids[i][0].relatedGridXY)
                 {
                     StomachGridInfo relatedGridInfo = GetGridInfo(relatedGridXY);
-                
-                    relatedGridInfo.relatedGridXY.Remove(new Vector2(0, i));
+                    
+                    var whereRemove = relatedGridInfo.relatedGridXY.FirstOrDefault(t => (int)t.x == 0 && (int)t.y == i);
+                    relatedGridInfo.relatedGridXY.Remove(whereRemove);
                 }
             }
             stomachGrids[i][0].relatedGridXY.Clear();
@@ -149,11 +179,17 @@ public class StomachBagMgr : MonoBehaviour
     {
         for (int i = 0; i < bagRow; i++)
         {
-            for (int j = 0; j < bagColumn; j++)
+            for (int j = 0; j < bagColumn - 1; j++)
             {
                 stomachGrids[i][j] = stomachGrids[i][j + 1];
+                
+                for (int k = 0; k < stomachGrids[i][j].relatedGridXY.Count; k++)
+                {
+                    stomachGrids[i][j].relatedGridXY[k] = new Vector2(stomachGrids[i][j].relatedGridXY[k].x - 1, stomachGrids[i][j].relatedGridXY[k].y);
+                }
             }
         }
+        
     }
     
     public StomachGridInfo GetGridInfo(Vector2 gridXY)
@@ -164,6 +200,16 @@ public class StomachBagMgr : MonoBehaviour
     public Vector2 TransToGridXY(Vector3 position)
     {
         Vector2 gridXY = new Vector2();
+        Vector3 bagLeftBottomPos = stomachBagGrid.transform.position;
+        gridXY.x = (int) ((position.x - bagLeftBottomPos.x) / cellSize);
+        gridXY.y = (int) ((position.y - bagLeftBottomPos.y) / cellSize);
+        return gridXY;
+    }
+    
+    public Vector2 LocalTransToGridXY(Vector3 position)
+    {
+        Vector2 gridXY = new Vector2();
+        Vector3 bagLeftBottomPos = stomachBagGrid.transform.localPosition;
         gridXY.x = (int) ((position.x - bagLeftBottomPos.x) / cellSize);
         gridXY.y = (int) ((position.y - bagLeftBottomPos.y) / cellSize);
         return gridXY;
@@ -178,9 +224,28 @@ public class StomachBagMgr : MonoBehaviour
         }
         return false;
     }
+    
+
+    public void PrintAll()
+    {
+        for (int i = 0; i < bagRow; i++)
+        {
+            for (int j = 0; j < bagColumn; j++)
+            {
+                print("x:" + j + " y:" + i + " foodType:" + stomachGrids[i][j].isActive);
+
+            }
+        }
+    }
 
     void Awake()
     {
-        InitStomachGrids();
+        //InitStomachGrids();
+        //SetStomachBagSize(5,5);
+    }
+
+    void Update()
+    {
+        
     }
 }
