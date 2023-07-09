@@ -105,12 +105,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -144,8 +144,9 @@ GameObject:
   - component: {fileID: 6543423512660120454}
   - component: {fileID: 8765384126909916063}
   - component: {fileID: 683255049468988882}
+  - component: {fileID: 825443977}
   m_Layer: 5
-  m_Name: Image
+  m_Name: InventoryImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,11 +167,11 @@ RectTransform:
   m_Father: {fileID: 5947039795481193178}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 401.8197, y: -83.366196}
-  m_SizeDelta: {x: 345.3554, y: 397.2676}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1120, y: 0}
+  m_SizeDelta: {x: 800, y: 760}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &8765384126909916063
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -209,3 +210,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &825443977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8085606801815651236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf1a48d1f56e1e45b2cf08bff457e48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodInInventory: []
+  debugPrefab: {fileID: 601278666132410646, guid: 3f2c904b05a7bf6499689f42a7eac1a3, type: 3}
