@@ -61,10 +61,10 @@ public class PlayerController : MonoBehaviour {
         }
 
         // Dev
-        //if (DevKey.Down(KeyCode.L))
-        //{
-        //    LevelUp();
-        //}
+        if (DevKey.Down(KeyCode.L))
+        {
+            LevelUp();
+        }
         if (DevKey.Down(KeyCode.H))
         {
             AddPlayerHealth(1);
@@ -161,6 +161,8 @@ public class PlayerController : MonoBehaviour {
 
     private void Dead()
     {
+        // œ»≤ªÀ¿¡À
+        return;
         // TODO: Dead
         OnPlayerDead?.Invoke();
     }
