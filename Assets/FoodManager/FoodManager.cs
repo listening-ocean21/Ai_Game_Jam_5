@@ -446,7 +446,7 @@ namespace FoodManager
 		}
 
 		//全局随机生产食物
-		public Vector2Int[] ProduceFood(uint level)
+		public List<Vector2Int> ProduceFood(uint level)
 		{
 			int numOfFood = 0;
 			//根据关卡数生产食物
@@ -496,6 +496,7 @@ namespace FoodManager
 
 			} while (!qualifiedFlag);
 
+			List<Vector2Int> productFoodList = new List<Vector2Int>();
 			//随机确定食物的具体形状
 			foreach (int food in foods)
 			{
@@ -504,7 +505,9 @@ namespace FoodManager
 				int[] foodShapeIndex = GenerateUniqueRandom(0, shapeCount - 1, 1);
 				int foodShape = Food.shapes[foodShapeIndex[0]];
 
+				productFoodList.Add(new Vector2Int(food, foodShape));
 			}
+			return productFoodList;
 		}
 
 

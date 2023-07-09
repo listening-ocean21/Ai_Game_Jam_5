@@ -1,3 +1,4 @@
+using FoodManager;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,13 +10,6 @@ using UnityEngine.UIElements;
 
 public class StomachBagMgr : MonoBehaviour
 {
-    public enum FoodType
-    {
-        Apple = 1,
-        Banana = 2,
-        None = 3,
-        
-    }
     
     public static StomachBagMgr inst = null;
 
