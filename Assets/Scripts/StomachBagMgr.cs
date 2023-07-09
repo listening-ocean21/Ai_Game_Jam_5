@@ -38,6 +38,7 @@ public class StomachBagMgr : MonoBehaviour
     public int bagRow = 6;
     public int bagColumn = 7;
     public int cellSize = 100;
+    public int foodSize = 4;
     
     //public Vector3 bagLeftBottomPos = new Vector3();
 
@@ -88,7 +89,7 @@ public class StomachBagMgr : MonoBehaviour
 
 
     //判断是否能放进此处的格子，食物拖拽调用，传入食物左下角的trans，以及食物的形状
-    public bool CheckPutFood(Vector3 position, List<List<bool>> foodShape, FoodType foodType)
+    public bool CheckPutFood(Vector3 position, uint[,] foodShape, FoodType foodType)
     {
         Vector2 originGridXY = TransToGridXY(position);
         if (originGridXY.x < 0 || originGridXY.x >= bagColumn || originGridXY.y < 0 || originGridXY.y >= bagRow)
@@ -97,23 +98,23 @@ public class StomachBagMgr : MonoBehaviour
         } 
         
 
-        for (int i = 0; i < foodShape.Count; i++)
+        for (int i = 0; i < foodSize; i++)
         {
-            for (int j = 0; j < foodShape[i].Count; j++)
+            for (int j = 0; j < foodSize; j++)
             {
                 //判断越界
                 if (originGridXY.x + j < 0 || originGridXY.x + j >= bagColumn || originGridXY.y + i < 0 || originGridXY.y + i >= bagRow)
                 {
                     return false;
                 }
-                if (IsGridOccupied(new Vector2(originGridXY.x + j, originGridXY.y + i)) && foodShape[i][j]) return false;
+                if (IsGridOccupied(new Vector2(originGridXY.x + j, originGridXY.y + i)) && foodShape[i, j] == 1) return false;
             }
         }
         
         return true;
     }
 
-    public void PutFood(Vector3 position, List<List<bool>> foodShape, FoodType foodType)
+    public void PutFood(Vector3 position, uint[,] foodShape, FoodType foodType)
     {
         if (CheckPutFood(position, foodShape, foodType))
         {
@@ -122,11 +123,11 @@ public class StomachBagMgr : MonoBehaviour
             
             
 
-            for (int i = 0; i < foodShape.Count; i++)
+            for (int i = 0; i < foodSize; i++)
             {
-                for (int j = 0; j < foodShape[i].Count; j++)
+                for (int j = 0; j < foodSize; j++)
                 {
-                    if (foodShape[i][j])
+                    if (foodShape[i, j] == 1)
                     {
                         stomachGrids[(int) originGridXY.x + j][(int) originGridXY.y + i].foodType = foodType;
                         
@@ -135,11 +136,11 @@ public class StomachBagMgr : MonoBehaviour
                 }
             }
             
-            for (int i = 0; i < foodShape.Count; i++)
+            for (int i = 0; i < foodSize; i++)
             {
-                for (int j = 0; j < foodShape[i].Count; j++)
+                for (int j = 0; j < foodSize; j++)
                 {
-                    if (foodShape[i][j])
+                    if (foodShape[i, j] == 1)
                     {
                         stomachGrids[(int)originGridXY.x + j][(int)originGridXY.y + i].relatedGridXY = relatedGridXY;
                     }
@@ -239,7 +240,7 @@ public class StomachBagMgr : MonoBehaviour
 
     void Awake()
     {
-        InitStomachGrids();
+        //InitStomachGrids();
         //SetStomachBagSize(5,5);
     }
 
