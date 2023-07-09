@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace test
+namespace FoodManager
 {
 	public enum FoodType
 	{
@@ -21,7 +21,8 @@ namespace test
 
 		WhiteCarnation = 10,      //白康乃馨
 		YellowChrysanthemum = 11, //黄菊花
-		RedRose = 12              //红玫瑰
+		RedRose = 12 ,             //红玫瑰
+		None = 13
 	}
 	public struct FOOD
 	{
@@ -445,7 +446,7 @@ namespace test
 		}
 
 		//全局随机生产食物
-		public int[] ProduceFood(uint level)
+		public Vector2Int[] ProduceFood(uint level)
 		{
 			int numOfFood = 0;
 			//根据关卡数生产食物
@@ -480,7 +481,7 @@ namespace test
 			do
 			{
 				foods = GenerateUniqueRandom(0, 12, numOfFood);
-
+				
 				foreach (int food in foods)
 				{
 					FOOD Food = map[food];
@@ -495,8 +496,26 @@ namespace test
 
 			} while (!qualifiedFlag);
 
-			return foods;
+			//随机确定食物的具体形状
+			foreach (int food in foods)
+			{
+				FOOD Food = map[food];
+				int shapeCount = Food.shapes.Count;
+				int[] foodShapeIndex = GenerateUniqueRandom(0, shapeCount - 1, 1);
+				int foodShape = Food.shapes[foodShapeIndex[0]];
+
+			}
 		}
+
+
+
+		//public uint[,] GetFoodShape(FoodType foodType)
+		//{
+		//	FOOD Food = map[(int)foodType];
+		//	if (!Food.shapes)
+		//	{
+		//	}
+		//}
 	}
 
 	class execute

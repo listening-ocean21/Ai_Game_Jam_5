@@ -491,4 +491,9 @@ public class CRotation : ScriptableObject
             }
         }
     }
+
+    //public uint[,] GetFoodShape(uint vShape, Dir dir)
+    //{
+
+    //}
 }
