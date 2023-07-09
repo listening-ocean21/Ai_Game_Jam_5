@@ -1,3 +1,4 @@
+using AnttiStarterKit.Animations;
 using AnttiStarterKit.Utils;
 using DG.Tweening;
 using System;
@@ -15,6 +16,14 @@ public class Player : MonoBehaviour
     public PlayerAttributes Attributes;
 
 
+
+    [SerializeField] private SpriteRenderer playerImage;
+    [SerializeField] private SpriteRenderer nextPlayerImage;
+    [SerializeField] private Shaker shaker;
+
+
+    [SerializeField] private Sprite[] playerImages;
+
     private void Awake()
     {
         Attributes = new PlayerAttributes();
@@ -23,7 +32,12 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-
+        playerImage.sprite = playerImages[0];
+        nextPlayerImage.sprite = playerImages[1];
+        nextPlayerImage.color = new Color(1, 1, 1, 0);
+        PlayerController.Instance.OnPlayerEat.AddListener(PlayEatAnim);
+        PlayerController.Instance.OnPlayerDead.AddListener(PlayDeadAnim);
+        PlayerController.Instance.OnLevelUp += PlayLevelUpAnim;
     }
 
 
@@ -31,12 +45,33 @@ public class Player : MonoBehaviour
     {
 
     }
+    // 升级后使用
+    public void PlayLevelUpAnim()
+    {
+        nextPlayerImage.transform.localScale = new Vector3(2f, 2f, 1f);
+        nextPlayerImage.transform.DOScale(1f, 0.5f).SetEase(Ease.OutBack);
+        nextPlayerImage.DOColor(new Color(1, 1, 1, 1), 0.5f).SetEase(Ease.OutBack).OnComplete(() =>
+        {
+            nextPlayerImage.sprite = playerImages[Mathf.Min(Attributes.Level, playerImages.Length - 1)];
+            nextPlayerImage.color = new Color(1, 1, 1, 0);
+        });
+        playerImage.DOColor(new Color(1, 1, 1, 0), 0.5f).SetEase(Ease.OutBack).OnComplete(() =>
+        {
+            playerImage.sprite = nextPlayerImage.sprite;
+            playerImage.color = new Color(1, 1, 1, 1);
+        });
+    }
 
-    //protected override void Hit(DamageContext context)
-    //{
-    //    base.Hit(context);
-    //    //IndicatorManager.instance.Spawn(transform.position, context.value.ToString());
-    //}
+    public void PlayEatAnim()
+    {
+        shaker.Shake();
+    }
+
+    public void PlayDeadAnim()
+    {
+        playerImage.transform.DOScale(0.5f, 0.5f).SetEase(Ease.OutBack);
+        playerImage.DOColor(new Color(1, 1, 1, 0), 0.5f).SetEase(Ease.OutBack);
+    }
 
 
     public class PlayerAttributes
@@ -67,6 +102,17 @@ public class Player : MonoBehaviour
     }
 }
 
+[Serializable]
+public class DayCost
+{
+    public int Health;          // 生命值
+    public int San;             // 理智
+    public int Strength;    // 适应力
+}
 
-
+[Serializable]
+public class DayCosts
+{
+    public List<DayCost> Costs;
+}
 

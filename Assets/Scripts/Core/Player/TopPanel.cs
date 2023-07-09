@@ -13,6 +13,10 @@ public class TopPanel : MonoBehaviour
     public NumberScroller sanScroller;
     public NumberScroller strengthScroller;
 
+    public NumberScroller healthCostScroller;
+    public NumberScroller sanCostScroller;
+    public NumberScroller strengthCostScroller;
+
 
     // Start is called before the first frame update
     void Start()

@@ -1,3 +1,4 @@
+using AnttiStarterKit.Extensions;
 using AnttiStarterKit.Utils;
 using System;
 using System.Collections.Generic;
@@ -26,11 +27,17 @@ public class PlayerController : MonoBehaviour {
 
     #region UI
     [SerializeField] private TopPanel topPanel;
+    [SerializeField] private SubPanel subPanel;
     #endregion
+
+
+    public List<DayCosts> DayCosts;
 
 
     public UnityAction OnLevelUp;
     public UnityEvent OnPlayerEat;
+    public UnityEvent OnPlayerDead;
+    public UnityEvent OnPlayerWin;
 
 
 
@@ -54,10 +61,10 @@ public class PlayerController : MonoBehaviour {
         }
 
         // Dev
-        //if (DevKey.Down(KeyCode.L))
-        //{
-        //    LevelUp();
-        //}
+        if (DevKey.Down(KeyCode.L))
+        {
+            LevelUp();
+        }
         if (DevKey.Down(KeyCode.H))
         {
             AddPlayerHealth(1);
@@ -72,7 +79,7 @@ public class PlayerController : MonoBehaviour {
         }
         if (DevKey.Down(KeyCode.D))
         {
-            AddDay();
+            DayPass();
         }
         if (DevKey.Down(KeyCode.E))
         {
@@ -93,7 +100,7 @@ public class PlayerController : MonoBehaviour {
 
 
     // TODO: 食物类型
-    private void PlayerEat()
+    public void PlayerEat()
     {
 
         OnPlayerEat?.Invoke();
@@ -131,9 +138,14 @@ public class PlayerController : MonoBehaviour {
         OnLevelUp?.Invoke();
     }
 
-    public void AddDay()
+    public void DayPass()
     {
-        if (Player.Attributes.Day >= Player.MaxDay) return;
+        if (Player.Attributes.Day >= Player.MaxDay)
+        {
+            Win();
+            return;
+        }
+        DayCost();
         Player.Attributes.Day++;
         topPanel.dayText.text = $"{Player.Attributes.Day}";
         if (Player.Attributes.Day % 5 == 1)
@@ -142,6 +154,35 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    private void Win()
+    {
+        // TODO: Win
+    }
+
+    private void Dead()
+    {
+        // 先不死了
+        return;
+        // TODO: Dead
+        OnPlayerDead?.Invoke();
+    }
+
+    public void DayCost()
+    {
+        DayCost dayCost = DayCosts[Player.Attributes.Level].Costs.Random();
+        if (dayCost == null) return;
+        Player.Attributes.Health -= dayCost.Health;
+        Player.Attributes.San -= dayCost.San;
+        Player.Attributes.Strength -= dayCost.Strength;
+
+        topPanel.healthCostScroller.Add(-dayCost.Health);
+        topPanel.sanCostScroller.Add(-dayCost.San);
+        topPanel.strengthCostScroller.Add(-dayCost.Strength);
+        if (Player.Attributes.Health <= 0 || Player.Attributes.San <= 0 || Player.Attributes.Strength <= 0)
+        {
+            Invoke(nameof(Dead), 0.5f);
+        }
+    }   
 
 
 }
