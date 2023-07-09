@@ -346,7 +346,77 @@ namespace test
 			return map;
         }
 
+		//获取形状的AABB包围盒
+		public Vector2Int getShapeAABB(int vShape)
+		{
+			if (vShape == 1)
+			{
+				return new Vector2Int(1, 1);
 
+			}
+			else if (vShape == 2)
+			{
+				return new Vector2Int(2, 1);
+			}
+			else if (vShape == 3)
+			{
+				return new Vector2Int(2, 2);
+			}
+			else if (vShape == 4)
+			{
+				return new Vector2Int(2, 2);
+			}
+			else if (vShape == 5)
+			{
+				return new Vector2Int(2, 2);
+			}
+			else if (vShape == 6)
+			{
+				return new Vector2Int(3, 2);
+			}
+			else if (vShape == 7)
+			{
+				return new Vector2Int(2, 3);
+			}
+			else if (vShape == 8)
+			{
+				return new Vector2Int(1, 3);
+			}
+			else if (vShape == 9)
+			{
+				return new Vector2Int(2, 3);
+			}
+			else if (vShape == 10)
+			{
+				return new Vector2Int(1, 4);
+			}
+			else if (vShape == 11)
+			{
+				return new Vector2Int(2, 3);
+			}
+			else if (vShape == 12)
+			{
+				return new Vector2Int(2, 2);
+			}
+			else if (vShape == 13)
+			{
+				return new Vector2Int(2, 3);
+			}
+			else if (vShape == 14)
+			{
+				return new Vector2Int(3, 2);
+			}
+			else if (vShape == 15)
+			{
+				return new Vector2Int(4, 2);
+			}
+			else if (vShape == 16)
+			{
+				return new Vector2Int(3, 3);
+			}
+			else
+				return new Vector2Int(0, 0);
+		}
 		public int[] GenerateUniqueRandom(int minValue, int maxValue, int n)
 		{
 			if (n > maxValue - minValue + 1)
