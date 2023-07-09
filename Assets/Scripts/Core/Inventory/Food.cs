@@ -1,12 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
-public enum FoodType
-{
-
-}
 /// <summary>
 /// 测试用的Food类, 如果报错可删除
 /// </summary>
